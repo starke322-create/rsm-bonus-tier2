@@ -116,6 +116,14 @@
       font-weight: bold;
       background: #eee;
     }
+      .tier-text {
+      font-size: 1.07em;
+      color: #222;
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 0;
+      text-align: center;
+    }
     .section-title {
       font-size: 1.1em;
       margin-top: 16px;
@@ -365,6 +373,20 @@
       return 0;
     }
 
+    function getGpTier(gp, table) {
+      for (let i = 0; i < table.length; i++) {
+        if (gp >= table[i].min && gp <= table[i].max) {
+          // Format the tier as shown in your example (e.g. "75k-149k")
+          let minTier = Math.round(table[i].min/1000);
+          let maxTier = Math.round(table[i].max/1000);
+          // Adjust to "999k+" for top tier
+          let maxTierStr = maxTier >= 999 ? (minTier + "k+") : maxTier + "k";
+          return `GP Tier Achieved (${minTier}k-${maxTierStr})`;
+        }
+      }
+      return "GP Tier Achieved (Below Minimum Tier)";
+    }
+    
     function adjustPayout(percent, base) {
       const pct = percent / 100;
       if (pct > 0.7999 && pct < 1.25) {
@@ -482,6 +504,9 @@
       const accgpPayout = vlookupPayout(gp, accgpTable);
       const tfbPayout = vlookupPayout(gp, tfbTable);
 
+      // Get GP Tier text
+      const gpTierText = getGpTier(gp, cpvTable);
+
       // Adjusted payouts
       const cpvAdj = adjustPayout(cpv, cpvPayout);
       const btsAdj = adjustPayout(bts, btsPayout);
@@ -556,7 +581,8 @@
       `;
 
       // Breakdown table
-      let breakdownHTML = `<table class="breakdown-table"><thead><tr>
+      let breakdownHTML = `<div class="tier-text">${gpTierText}</div>`;
+      breakdownHTML += `<table class="breakdown-table"><thead><tr>
         <th>Line Item</th>
         <th>Bucket</th>
         <th>Attained</th>
