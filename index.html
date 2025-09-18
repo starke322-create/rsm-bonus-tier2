@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSM Bonus Calculator (Tier 1)</title>
+  <style>
+    body {
+      background: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 1.3em;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #c2185b;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+    .input-col {
+      flex: 1;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      font-size: 1em;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      margin-bottom: 4px;
+    }
+    .side-btn {
+      background: #1976d2;
+      color: #fff;
+      font-size: 1em;
+      border: none;
+      padding: 10px;
+      width: 50%;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .side-btn:hover {
+      background: #0d47a1;
+    }
+    .calc-btn {
+      background: #388e3c;
+      color: #fff;
+      font-size: 1em;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .calc-btn:hover {
+      background: #2e7031;
+    }
+    .result {
+      background: #e8f5e9;
+      color: #388e3c;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      border: 2px solid #388e3c;
+    }
+    .breakdown-box {
+      background: #f5f5f5;
+      color: #333;
+      font-size: 0.97em;
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 7px;
+      border: 1px solid #bbb;
+      overflow-x: auto;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .breakdown-table th, .breakdown-table td {
+      border: 1px solid #ddd;
+      padding: 6px 8px;
+      text-align: center;
+    }
+    .breakdown-table th {
+      background: #e0e0e0;
+      font-weight: bold;
+    }
+    .breakdown-table tr:last-child td {
+      font-weight: bold;
+      background: #eee;
+    }
+    .section-title {
+      font-size: 1.1em;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sep25 Unofficial RSM Bonus Calculator (Tier 1)</h1>
+
+    <form id="bonusForm" autocomplete="off">
+
+      <div class="section-title">Store Performance</div>
+
+      <div class="input-row">
+        <div class="input-col">
+          <label for="gp">Trending NET Store GP</label>
+          <input type="number" id="gp" required min="0" step="1" placeholder="e.g. 30000 for $30,000">
+        </div>
+        <div class="input-col">
+          <label for="cpv">CPV % Attained</label>
+          <input type="number" id="cpv" required min="0" max="200" step="0.01" placeholder="e.g. 100 for 100%">
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-col">
+          <label for="vaf">VAF % Attained</label>
+          <input type="number" id="vaf" required min="0" max="200" step="0.01" placeholder="e.g. 100 for 100%">
+        </div>
+        <div class="input-col">
+          <label for="bts">BTS % Attained</label>
+          <input type="number" id="bts" required min="0" max="200" step="0.01" placeholder="e.g. 100 for 100%">
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-col">
+          <label for="accgp">Acc GP % Attained</label>
+          <input type="number" id="accgp" required min="0" max="200" step="0.01" placeholder="e.g. 100 for 100%">
+        </div>
+        <div class="input-col">
+          <label for="tfb">TFB % Attained</label>
+          <input type="number" id="tfb" required min="0" max="200" step="0.01" placeholder="e.g. 100 for 100%">
+        </div>
+      </div>
+
+      <div class="section-title">Accelerators & Decelerators</div>
+      
+      <div class="input-row">
+        <div class="input-col">
+          <label for="storecslb">Store CSLB</label>
+          <select id="storecslb" required>
+            <option value="3rd">3rd</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="4th">4th</option>
+            <option value="5th">5th</option>
+          </select>
+        </div>
+          <div class="input-col">
+          <label for="tfb%">TFB %</label>
+          <select id="tfb%" required>
+            <option value="90-124.99">90-124.99</option>
+            <option value="125+">125+</option>
+            <option value="0-89.99">0-89.99</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-col">
+          <label for="top15hsi">Top 15 HSI</label>
+          <select id="top15hsi" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+          <div class="input-col">
+          <label for="top15tfb">Top 15 TFB</label>
+          <select id="top15tfb" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-col">
+          <label for="tlife">T-Life Below 65%</label>
+          <select id="tlife" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+          <div class="input-col">
+          <label for="socialmedia">Social Media</label>
+          <select id="socialmedia" required>
+            <option value="0.5-1post/100">0.5-1 Post/100</option>
+            <option value="1post/100">1 Post/100</option>
+            <option value="<0.5post/100"><0.5 Post/100</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="section-title">Qualifier & Performance Bonuses</div>
+      
+      <div class="input-row">
+        <div class="input-col">
+          <label for="perfectpunch">Perfect Punch +92%</label>
+          <select id="perfectpunch" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+          <div class="input-col">
+          <label for="mvpaward">MVP Award</label>
+          <select id="mvpaward" required>
+            <option value="no">No</option>
+            <option value="1st">1st</option>
+            <option value="2nd-5th">2nd-5th</option>
+            <option value="6th-10th">6th-10th</option>
+            <option value="11th-15th">11th-15th</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-col">
+          <label for="achieveall">Achieve All</label>
+          <select id="achieveall" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+          <div class="input-col">
+          <label for="worldclass">World Class</label>
+          <select id="worldclass" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="side-btn" onclick="resetForm()">Reset</button>
+        <button type="button" class="side-btn" onclick="maxPayout()">Max Payout</button>
+      </div>
+      <button type="button" class="calc-btn" onclick="calculateBonus()">Calculate Bonus</button>
+    </form>
+
+    <div id="result" class="result" style="display:none;"></div>
+    <div id="breakdown" class="breakdown-box" style="display:none;"></div>
+  </div>
+
+  <script>
+    // Reference payout tables for each metric
+       const cpvTable = [
+      {min: 0, max: 9999.99, payout: 150},
+      {min: 10000, max: 19999.99, payout: 275},
+      {min: 20000, max: 29999.99, payout: 400},
+      {min: 30000, max: 39999.99, payout: 600},
+      {min: 40000, max: 49999.99, payout: 800},
+      {min: 50000, max: 74999.99, payout: 1000},
+      {min: 75000, max: 100000, payout: 1200}
+    ];
+    const btsTable = [
+      {min: 0, max: 9999.99, payout: 75},
+      {min: 10000, max: 19999.99, payout: 125},
+      {min: 20000, max: 29999.99, payout: 225},
+      {min: 30000, max: 39999.99, payout: 300},
+      {min: 40000, max: 49999.99, payout: 400},
+      {min: 50000, max: 74999.99, payout: 500},
+      {min: 75000, max: 100000, payout: 600}
+    ];
+    const vafTable = [
+      {min: 0, max: 9999.99, payout: 75},
+      {min: 10000, max: 19999.99, payout: 100},
+      {min: 20000, max: 29999.99, payout: 100},
+      {min: 30000, max: 39999.99, payout: 175},
+      {min: 40000, max: 49999.99, payout: 250},
+      {min: 50000, max: 74999.99, payout: 325},
+      {min: 75000, max: 100000, payout: 500}
+    ];
+    const accgpTable = [
+      {min: 0, max: 9999.99, payout: 50},
+      {min: 10000, max: 19999.99, payout: 75},
+      {min: 20000, max: 29999.99, payout: 75},
+      {min: 30000, max: 39999.99, payout: 150},
+      {min: 40000, max: 49999.99, payout: 225},
+      {min: 50000, max: 74999.99, payout: 300},
+      {min: 75000, max: 100000, payout: 450}
+        ];
+    const tfbTable = [
+      {min: 0, max: 9999.99, payout: 50},
+      {min: 10000, max: 19999.99, payout: 75},
+      {min: 20000, max: 29999.99, payout: 75},
+      {min: 30000, max: 39999.99, payout: 100},
+      {min: 40000, max: 49999.99, payout: 200},
+      {min: 50000, max: 74999.99, payout: 250},
+      {min: 75000, max: 100000, payout: 400}
+    ];
+
+    // CSLB bonus lookup
+    const cslbAdj = {
+      "1st": 0.20,
+      "2nd": 0.10,
+      "3rd": 0.00,
+      "4th": -0.10,
+      "5th": -0.20
+    };
+
+    // MVP award bonus lookup
+    const mvpBonus = {
+      "No": 0,
+      "1st": 600,
+      "2nd-5th": 400,
+      "6th-10th": 300,
+      "11th-15th": 200
+    };
+
+    const socialMediaBonusPerc = {
+      "0.5-1post/100": 0,
+      "1post/100": 0.10,
+      "<0.5post/100": -0.10
+    };
+
+    const tfbPercentBonusPerc = {
+      "90-124.99": 0,    // 0%
+      "125+": 0.10,      // +10%
+      "0-89.99": -0.10   // -10%
+    };
+    
+    // Fixed amounts for World Class and Achieve All
+    const worldClassBonus = 500;
+    const achieveAllBonus = 300;
+
+    function vlookupPayout(gp, table) {
+      for (let i = 0; i < table.length; i++) {
+        if (gp >= table[i].min && gp <= table[i].max) {
+          return table[i].payout;
+        }
+      }
+      return 0;
+    }
+
+    function adjustPayout(percent, base) {
+      const pct = percent / 100;
+      if (pct > 0.7999 && pct < 1.25) {
+        return base * pct;
+      } else if (pct > 1.2499) {
+        return base * 1.25;
+      } else {
+        return 0;
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('cpv').value = '100';
+      document.getElementById('bts').value = '100';
+      document.getElementById('vaf').value = '100';
+      document.getElementById('accgp').value = '100';
+      document.getElementById('tfb').value = '100';
+      document.getElementById('storecslb').value = '3rd';
+      document.getElementById('tfb%').value = '90-124.99';
+      document.getElementById('top15hsi').value = 'no';
+      document.getElementById('top15tfb').value = 'no';
+      document.getElementById('tlife').value = 'no';
+      document.getElementById('socialmedia').value = '0.5-1post/100';
+      document.getElementById('perfectpunch').value = 'yes';
+      document.getElementById('mvpaward').value = 'no';
+      document.getElementById('achieveall').value = 'no';
+      document.getElementById('worldclass').value = 'no';
+      document.getElementById('result').style.display = "none";
+      document.getElementById('breakdown').style.display = "none";
+    }
+
+    function maxPayout() {
+      document.getElementById('cpv').value = '125';
+      document.getElementById('bts').value = '125';
+      document.getElementById('vaf').value = '125';
+      document.getElementById('tfb').value = '125';
+      document.getElementById('accgp').value = '125';
+      document.getElementById('storecslb').value = '1st';
+      document.getElementById('tfb%').value = '125+';
+      document.getElementById('top15hsi').value = 'yes';
+      document.getElementById('top15tfb').value = 'yes';
+      document.getElementById('tlife').value = 'no';
+      document.getElementById('socialmedia').value = '1post/100';
+      document.getElementById('perfectpunch').value = 'yes';
+      document.getElementById('mvpaward').value = '1st';
+      document.getElementById('achieveall').value = 'yes';
+      document.getElementById('worldclass').value = 'yes';
+      document.getElementById('result').style.display = "none";
+      document.getElementById('breakdown').style.display = "none";
+    }
+
+    function calculateBonus() {
+      // Inputs
+      const rawGp = document.getElementById('gp').value.replace(/,/g, '').trim();
+      const gp = Math.floor(parseFloat(rawGp) || 0);
+      const cpv = Number(document.getElementById('cpv').value);
+      const bts = Number(document.getElementById('bts').value);
+      const vaf = Number(document.getElementById('vaf').value);
+      const accgp = Number(document.getElementById('accgp').value);
+      const tfb = Number(document.getElementById('tfb').value);
+      const perfectpunch = document.getElementById('perfectpunch').value;
+      const storecslb = document.getElementById('storecslb').value;
+      const mvpaward = document.getElementById('mvpaward').value;
+      const top15tfb = document.getElementById('top15tfb').value;
+      const top15hsi = document.getElementById('top15hsi').value;
+      const tlife = document.getElementById('tlife').value;
+      const worldclass = document.getElementById('worldclass').value;
+      const achieveall = document.getElementById('achieveall').value;
+      const socialmedia = document.getElementById('socialmedia').value;
+      const tfbPercent = document.getElementById('tfb%').value;
+
+      // If Perfect Punch is "no", show $0 and breakdown indicating all are zero
+      if (perfectpunch === "no") {
+        document.getElementById('result').style.display = "block";
+        document.getElementById('result').innerHTML = `
+          <div>Estimated Bonus Payout:</div>
+          <div style="font-size:2em;">$0.00</div>
+        `;
+        document.getElementById('breakdown').style.display = "block";
+        let breakdownRows = [
+          ["CPV", "—", "—", "$0.00"],
+          ["BTS", "—", "—", "$0.00"],
+          ["VAF", "—", "—", "$0.00"],
+          ["Accessories", "—", "—", "$0.00"],
+          ["TFB", "—", "—", "$0.00"],
+          ["CSLB", "—", "—", "$0.00"],
+          ["Top 15 TFB", "—", "—", "$0.00"],
+          ["Top 15 HSI", "—", "—", "$0.00"],
+          ["T-Life Below 65%", "—", "—", "$0.00"],
+          ["TFB %", "—", "—", "$0.00"],
+          ["Social Media", "—", "—", "$0.00"],
+          ["World Class", "$500", "no", "$0.00"],
+          ["Achieve All", "$300", "no", "$0.00"],
+          ["MVP Award", "—", "no", "$0.00"],
+          ["TOTAL", "", "", "$0.00"]
+        ];
+        let breakdownHTML = `<table class="breakdown-table"><thead><tr>
+            <th>Line Item</th>
+            <th>Bucket</th>
+            <th>Attained</th>
+            <th>Total</th>
+          </tr></thead><tbody>`;
+        breakdownRows.forEach(row => {
+          breakdownHTML += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
+        });
+        breakdownHTML += `</tbody></table>`;
+        document.getElementById('breakdown').innerHTML = breakdownHTML;
+        return;
+      }
+      
+      // Lookups for base payout
+      const cpvPayout = vlookupPayout(gp, cpvTable);
+      const btsPayout = vlookupPayout(gp, btsTable);
+      const vafPayout = vlookupPayout(gp, vafTable);
+      const accgpPayout = vlookupPayout(gp, accgpTable);
+      const tfbPayout = vlookupPayout(gp, tfbTable);
+
+      // Adjusted payouts
+      const cpvAdj = adjustPayout(cpv, cpvPayout);
+      const btsAdj = adjustPayout(bts, btsPayout);
+      const vafAdj = adjustPayout(vaf, vafPayout);
+      const accgpAdj = adjustPayout(accgp, accgpPayout);
+      const tfbAdj = adjustPayout(tfb, tfbPayout);
+
+      const totalAdj = cpvAdj + btsAdj + vafAdj + accgpAdj + tfbAdj;
+
+      // Bonus calculations
+      // CSLB bonus
+      const cslbPerc = cslbAdj[storecslb] || 0;
+      const cslbPayout = totalAdj * cslbPerc;
+
+      // MVP award
+      const mvpPayout = mvpBonus[mvpaward] || 0;
+
+      // Top 15 TFB
+      const tfbPerc = (top15tfb === "yes") ? 0.05 : 0;
+      const tfbBonus = totalAdj * tfbPerc;
+
+      // Top 15 HSI
+      const hsiPerc = (top15hsi === "yes") ? 0.05 : 0;
+      const hsiBonus = totalAdj * hsiPerc;
+
+      // Tlife
+      const tlifePerc = (tlife === "yes") ? -0.10 : 0;
+      const tlifeBonus = totalAdj * tlifePerc;
+
+      // TFB Percent
+      const tfbPercentPerc = tfbPercentBonusPerc[tfbPercent] || 0;
+      const tfbPercentBonus = totalAdj * tfbPercentPerc;
+      
+      // World Class
+      const wcBonus = (worldclass === "yes") ? worldClassBonus : 0;
+
+      // Achieve All
+      const aaBonus = (achieveall === "yes") ? achieveAllBonus : 0;
+
+      const socialPerc = socialMediaBonusPerc[socialmedia] || 0;
+      const socialBonus = totalAdj * socialPerc;
+
+      // Breakdown rows
+      let breakdownRows = [
+        ["CPV", `$${cpvPayout}`, `${cpv}%`, `$${cpvAdj.toFixed(2)}`],
+        ["BTS", `$${btsPayout}`, `${bts}%`, `$${btsAdj.toFixed(2)}`],
+        ["VAF", `$${vafPayout}`, `${vaf}%`, `$${vafAdj.toFixed(2)}`],
+        ["Accessories", `$${accgpPayout}`, `${accgp}%`, `$${accgpAdj.toFixed(2)}`],
+        ["TFB", `$${tfbPayout}`, `${tfb}%`, `$${tfbAdj.toFixed(2)}`],
+        ["CSLB", `${(cslbPerc*100).toFixed(0)}%`, `${storecslb}`, `$${cslbPayout.toFixed(2)}`],
+        ["Top 15 TFB", "5%", `${top15tfb}`, `$${tfbBonus.toFixed(2)}`],
+        ["Top 15 HSI", "5%", `${top15hsi}`, `$${hsiBonus.toFixed(2)}`],
+        ["T-Life", "-10%", `${tlife}`, `$${tlifeBonus.toFixed(2)}`],
+        ["TFB %", `${(tfbPercentPerc*100).toFixed(0)}%`, `${tfbPercent}`, `$${tfbPercentBonus.toFixed(2)}`],
+        ["Social Media", `${(socialPerc*100).toFixed(0)}%`, `${socialmedia}`, `$${socialBonus.toFixed(2)}`],
+        ["World Class", "$500", `${worldclass}`, `$${wcBonus.toFixed(2)}`],
+        ["Achieve All", "$300", `${achieveall}`, `$${aaBonus.toFixed(2)}`],
+        ["MVP Award", `$${mvpPayout}`, `${mvpaward}`, `$${mvpPayout.toFixed(2)}`]
+      ];
+
+      const totalBonus = cslbPayout + tfbBonus + hsiBonus + wcBonus + aaBonus + mvpPayout + tlifeBonus + socialBonus + tfbPercentBonus;
+      const totalPayout = totalAdj + totalBonus;
+
+      breakdownRows.push(["TOTAL", "", "", `$${totalPayout.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`]);
+
+      document.getElementById('result').style.display = "block";
+      document.getElementById('result').innerHTML = `
+        <div>Estimated Bonus Payout:</div>
+        <div style="font-size:2em;">$${totalPayout.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+        <div style="font-size:0.93em; color: #555; margin-top:6px;">
+          <em>Does not include operational losses</em>
+      `;
+
+      // Breakdown table
+      let breakdownHTML = `<table class="breakdown-table"><thead><tr>
+        <th>Line Item</th>
+        <th>Bucket</th>
+        <th>Attained</th>
+        <th>Total</th>
+      </tr></thead><tbody>`;
+      breakdownRows.forEach(row => {
+        breakdownHTML += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
+      });
+      breakdownHTML += `</tbody></table>`;
+      document.getElementById('breakdown').style.display = "block";
+      document.getElementById('breakdown').innerHTML = breakdownHTML;
+    }
+  </script>
+</body>
+</html>
