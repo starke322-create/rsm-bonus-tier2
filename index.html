@@ -186,11 +186,13 @@
           </select>
         </div>
           <div class="input-col">
-          <label for="tfb%">TFB %</label>
-          <select id="tfb%" required>
-            <option value="90-124.99">90-124.99</option>
-            <option value="125+">125+</option>
-            <option value="0-89.99">0-89.99</option>
+          <label for="p360%">P360 %</label>
+          <select id="p360%" required>
+            <option value="45-49.9">45-49.9</option>
+            <option value="55+">55+</option>
+            <option value="50-54.9">50-54.9</option>
+            <option value="40-44.99">40-44.99</option>
+            <option value="0-39.9">0-39.9</option>
           </select>
         </div>
       </div>
@@ -354,7 +356,7 @@
       "<1post/100": -0.10
     };
 
-    const tfbPercentBonusPerc = {
+    const p360PercentBonusPerc = {
       "90-124.99": 0,    // 0%
       "125+": 0.10,      // +10%
       "0-89.99": -0.10   // -10%
@@ -405,7 +407,7 @@
       document.getElementById('accgp').value = '100';
       document.getElementById('tfb').value = '100';
       document.getElementById('storecslb').value = '3rd';
-      document.getElementById('tfb%').value = '90-124.99';
+      document.getElementById('p360%').value = '40-44.9';
       document.getElementById('top15hsi').value = 'no';
       document.getElementById('top15tfb').value = 'no';
       document.getElementById('tlife').value = 'no';
@@ -425,11 +427,11 @@
       document.getElementById('tfb').value = '125';
       document.getElementById('accgp').value = '125';
       document.getElementById('storecslb').value = '1st';
-      document.getElementById('tfb%').value = '125+';
+      document.getElementById('p360%').value = '55+';
       document.getElementById('top15hsi').value = 'yes';
       document.getElementById('top15tfb').value = 'yes';
       document.getElementById('tlife').value = 'no';
-      document.getElementById('socialmedia').value = '1post/100';
+      document.getElementById('socialmedia').value = '2post/100';
       document.getElementById('perfectpunch').value = 'yes';
       document.getElementById('mvpaward').value = '1st';
       document.getElementById('achieveall').value = 'yes';
@@ -456,7 +458,7 @@
       const worldclass = document.getElementById('worldclass').value;
       const achieveall = document.getElementById('achieveall').value;
       const socialmedia = document.getElementById('socialmedia').value;
-      const tfbPercent = document.getElementById('tfb%').value;
+      const p360Percent = document.getElementById('p360%').value;
 
       // If Perfect Punch is "no", show $0 and breakdown indicating all are zero
       if (perfectpunch === "no") {
@@ -476,7 +478,7 @@
           ["Top 15 TFB", "—", "—", "$0.00"],
           ["Top 15 HSI", "—", "—", "$0.00"],
           ["T-Life Below 65%", "—", "—", "$0.00"],
-          ["TFB %", "—", "—", "$0.00"],
+          ["P360 %", "—", "—", "$0.00"],
           ["Social Media", "—", "—", "$0.00"],
           ["World Class", "$500", "no", "$0.00"],
           ["Achieve All", "$300", "no", "$0.00"],
@@ -536,9 +538,9 @@
       const tlifePerc = (tlife === "yes") ? -0.10 : 0;
       const tlifeBonus = totalAdj * tlifePerc;
 
-      // TFB Percent
-      const tfbPercentPerc = tfbPercentBonusPerc[tfbPercent] || 0;
-      const tfbPercentBonus = totalAdj * tfbPercentPerc;
+      // P360 Percent
+      const p360PercentPerc = p360PercentBonusPerc[p360Percent] || 0;
+      const p360PercentBonus = totalAdj * p360PercentPerc;
       
       // World Class
       const wcBonus = (worldclass === "yes") ? worldClassBonus : 0;
@@ -560,14 +562,14 @@
         ["Top 15 TFB", "5%", `${top15tfb}`, `$${tfbBonus.toFixed(2)}`],
         ["Top 15 HSI", "5%", `${top15hsi}`, `$${hsiBonus.toFixed(2)}`],
         ["T-Life", "-10%", `${tlife}`, `$${tlifeBonus.toFixed(2)}`],
-        ["TFB %", `${(tfbPercentPerc*100).toFixed(0)}%`, `${tfbPercent}`, `$${tfbPercentBonus.toFixed(2)}`],
+        ["P360 %", `${(p360PercentPerc*100).toFixed(0)}%`, `${p360Percent}`, `$${p360PercentBonus.toFixed(2)}`],
         ["Social Media", `${(socialPerc*100).toFixed(0)}%`, `${socialmedia}`, `$${socialBonus.toFixed(2)}`],
         ["World Class", "$500", `${worldclass}`, `$${wcBonus.toFixed(2)}`],
         ["Achieve All", "$300", `${achieveall}`, `$${aaBonus.toFixed(2)}`],
         ["MVP Award", `$${mvpPayout}`, `${mvpaward}`, `$${mvpPayout.toFixed(2)}`]
       ];
 
-      const totalBonus = cslbPayout + tfbBonus + hsiBonus + wcBonus + aaBonus + mvpPayout + tlifeBonus + socialBonus + tfbPercentBonus;
+      const totalBonus = cslbPayout + tfbBonus + hsiBonus + wcBonus + aaBonus + mvpPayout + tlifeBonus + socialBonus + p360PercentBonus;
       const totalPayout = totalAdj + totalBonus;
 
       breakdownRows.push(["TOTAL", "", "", `$${totalPayout.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`]);
