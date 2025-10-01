@@ -221,9 +221,9 @@
           <div class="input-col">
           <label for="socialmedia">Social Media</label>
           <select id="socialmedia" required>
-            <option value="0.5-1post/100">0.5-1 Post/100</option>
-            <option value="1post/100">1 Post/100</option>
-            <option value="<0.5post/100"><0.5 Post/100</option>
+            <option value="1-2post/100">1-2 Post/100</option>
+            <option value="2post/100">2 Post/100</option>
+            <option value="<1post/100"><1 Post/100</option>
           </select>
         </div>
       </div>
@@ -349,9 +349,9 @@
     };
 
     const socialMediaBonusPerc = {
-      "0.5-1post/100": 0,
-      "1post/100": 0.10,
-      "<0.5post/100": -0.10
+      "1-2post/100": 0,
+      "2post/100": 0.10,
+      "<1post/100": -0.10
     };
 
     const tfbPercentBonusPerc = {
@@ -409,7 +409,7 @@
       document.getElementById('top15hsi').value = 'no';
       document.getElementById('top15tfb').value = 'no';
       document.getElementById('tlife').value = 'no';
-      document.getElementById('socialmedia').value = '0.5-1post/100';
+      document.getElementById('socialmedia').value = '1-2post/100';
       document.getElementById('perfectpunch').value = 'yes';
       document.getElementById('mvpaward').value = 'no';
       document.getElementById('achieveall').value = 'no';
